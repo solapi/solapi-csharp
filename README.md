@@ -2,7 +2,7 @@
 
 ## 사용방법
 * Config.cs 와 MessagingLib.cs 파일을 프로젝트로 복사하여 사용합니다.
-* Config.cs에 API Key와 API Secret이 정상적으로 입력되어 있는지 확인해 주세요.
+* Config.cs에 API Key와 API Secret이 올바르게 입력되어 있는지 확인해 주세요.
 * Program.cs 예제 메인 모듈을 참고하세요.
 
 ## 예제
