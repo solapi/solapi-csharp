@@ -114,7 +114,13 @@ static class MessagingLib
 
     public static string GetUrl(object path)
     {
-        return Config.protocol + "://" + Config.domain + path;
+        string url = Config.protocol + "://" + Config.domain;
+        if (!string.IsNullOrEmpty(Config.prefix))
+        {
+            url += Config.prefix;
+        }
+        url += path;
+        return url;
     }
 
     public static Response Request(string path, string method, string data = Constants.vbNullString)
