@@ -1,10 +1,23 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 static class MessagingLib
 {
+    public class Agent
+    {
+        public string osPlatform;
+        public string sdkVersion;
+
+        public Agent()
+        {
+            osPlatform = Environment.OSVersion.Platform + " | " + Environment.Version;
+            sdkVersion = "C#/1.0.1";
+        }
+    }
+
     public class Message
     {
         public string type;
@@ -51,6 +64,7 @@ static class MessagingLib
         public string linkAnd;
         public string linkIos;
     }
+
     public class KakaoOptions
     {
         public string pfId;
@@ -75,7 +89,8 @@ static class MessagingLib
 
     public static string GetSignature(string apiKey, string data, string apiSecret)
     {
-        System.Security.Cryptography.HMACSHA256 sha256 = new System.Security.Cryptography.HMACSHA256(System.Text.Encoding.UTF8.GetBytes(apiSecret));
+        System.Security.Cryptography.HMACSHA256 sha256 =
+            new System.Security.Cryptography.HMACSHA256(System.Text.Encoding.UTF8.GetBytes(apiSecret));
         byte[] hashValue = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(data));
         string hash = BitConverter.ToString(hashValue).Replace("-", "");
         return hash.ToLower();
@@ -91,15 +106,18 @@ static class MessagingLib
             int idx = r.Next(0, 35);
             sb.Append(s.Substring(idx, 1));
         }
+
         return sb.ToString();
     }
+
     public static string GetAuth(string apiKey, string apiSecret)
     {
         string salt = GetSalt();
         string dateStr = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
         string data = dateStr + salt;
 
-        return "HMAC-SHA256 apiKey=" + apiKey + ", date=" + dateStr + ", salt=" + salt + ", signature=" + GetSignature(apiKey, data, apiSecret);
+        return "HMAC-SHA256 apiKey=" + apiKey + ", date=" + dateStr + ", salt=" + salt + ", signature=" +
+               GetSignature(apiKey, data, apiSecret);
     }
 
     public static string GetUrl(object path)
@@ -109,6 +127,7 @@ static class MessagingLib
         {
             url += Config.prefix;
         }
+
         url += path;
         return url;
     }
@@ -201,17 +220,19 @@ static class MessagingLib
         {
             if (string.IsNullOrEmpty(groupId))
                 throw new System.Exception("그룹아이디가 설정되지 않았습니다.");
-            return Request("/messages/v4/groups/" + groupId + "/messages", "POST", JsonConvert.SerializeObject(msgs, Formatting.None, JsonSettings));
+            return Request("/messages/v4/groups/" + groupId + "/messages", "POST",
+                JsonConvert.SerializeObject(msgs, Formatting.None, JsonSettings));
         }
 
         public Response Create()
         {
             GroupInfo groupInfo = new GroupInfo()
             {
-                osPlatform = Environment.OSVersion.VersionString,
-                sdkVersion = "VB.NET v1"
+                osPlatform = Environment.OSVersion.VersionString + " | " + Environment.Version,
+                sdkVersion = "C#/1.0.1"
             };
-            return Request("/messages/v4/groups", "POST", JsonConvert.SerializeObject(groupInfo, Formatting.None, JsonSettings));
+            return Request("/messages/v4/groups", "POST",
+                JsonConvert.SerializeObject(groupInfo, Formatting.None, JsonSettings));
         }
 
         public Response GetList()
@@ -223,7 +244,31 @@ static class MessagingLib
 
     public static Response SendMessages(Messages messages)
     {
-        return Request("/messages/v4/send-many", "POST", JsonConvert.SerializeObject(messages, Formatting.None, JsonSettings));
+        return Request("/messages/v4/send-many", "POST",
+            JsonConvert.SerializeObject(messages, Formatting.None, JsonSettings));
+    }
+
+    public static Response SendMessagesDetail(List<Message> messages, DateTime? dateTime = null)
+    {
+        String? scheduledDate = null;
+        if (dateTime != null)
+        {
+            scheduledDate = dateTime.Value.ToString("s");
+            if (scheduledDate != "")
+            {
+                scheduledDate += "Z";
+            }
+        }
+
+        var agent = new Agent();
+        var payload = new
+        {
+            agent,
+            messages,
+            scheduledDate
+        };
+        return Request("/messages/v4/send-many/detail", "POST",
+            JsonConvert.SerializeObject(payload, Formatting.None, JsonSettings));
     }
 
     public static Response UploadImage(string path)

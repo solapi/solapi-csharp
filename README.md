@@ -7,13 +7,14 @@
 
 ## 예제
 ```
-SendSMS.cs          SMS 발송 예제
-SendLMS.cs          LMS 발송 예제
-SendMMS.cs          MMS 발송 예제
-SendAlimtalk.cs     알림톡 발송 예제
-SendChingutalk.cs   친구톡 발송 예제
-GetBalance.cs       잔액 조회 예제
-MessageList         메시지 목록 조회 예제
+SendSMS.cs                  SMS 발송 예제
+SendLMS.cs                  LMS 발송 예제
+SendMMS.cs                  MMS 발송 예제
+SendAlimtalk.cs             알림톡 발송 예제
+SendChingutalk.cs           친구톡 발송 예제
+GetBalance.cs               잔액 조회 예제
+MessageList                 메시지 목록 조회 예제 목록
+SendScheduledMessages.cs    예약 발송 예제(예약 발송은 모든 발송 유형에 대응됩니다.)
 ```
 
 ## 예제 실행 방법
@@ -26,3 +27,8 @@ Messaging.exe [sms, lms, mms, alimtalk, chingutalk, balance, list]
 ```
 dotnet Messaging_SDK_For_.NET_Core3.1_CSharp.dll [sms, lms, mms, alimtalk, chingutalk, balance, list]
 ```
+
+
+## 주의사항
+
+.Net 5 혹은 .Net Core 3.1 버전 미만의 사용자(예) .Net Framework 4.0 등)는 MessagingLib.cs 파일 내 144번 라인 주석 해제 및 145번 라인에 주석처리를 진행하셔야 합니다.
