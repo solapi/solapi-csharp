@@ -300,4 +300,9 @@ static class MessagingLib
     {
         return Request("/messages/v4/groups", "GET");
     }
+
+    public static Response RemoveReservationToGroup(string groupId)
+    {
+        return Request($"/messages/v4/groups/{groupId}/schedule", "DELETE");
+    }
 }
