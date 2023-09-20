@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 static class SendAlimtalk
 {
@@ -11,41 +12,23 @@ static class SendAlimtalk
 
         MessagingLib.Messages messages = new MessagingLib.Messages();
 
-        // 텍스트 내용만 있는 간단한 알림톡
+        // #{변수} 에 값을 입력합니다. (템플릿의 모든 변수값을 입력해야 오류 발생하지 않습니다.)
+        Dictionary<string, string> variables = new Dictionary<string, string> { { "#{key1}", "value1" }, { "#{key2}", "value2" } };
+
+        // variables에 변수값을 입력하여 요청하면 알림톡의 내용은 서버쪽에서 자동으로 채워져 발송됩니다.
         messages.Add(new MessagingLib.Message()
         {
             to = "01000000001",
             from = "029302266",
-            text = "안녕하세요." + Environment.NewLine + "홍길동님 회원가입을 환영합니다.",
             kakaoOptions = new MessagingLib.KakaoOptions()
             {
                 pfId = "KA01PF190626020502205cl0mYSoplA2",
-                templateId = "KA01TP190626032036196g86q1RGN7D1" // 템플릿 등록 후 발급받은 값을 사용해 주세요
+                templateId = "KA01TP190626032036196g86q1RGN7D1", // 템플릿 등록 후 발급받은 값을 사용해 주세요
+                variables = variables
             }
         });
 
-        // 웹 링크 버튼이 하나 있는 알림톡
-        messages.Add(new MessagingLib.Message()
-        {
-            to = "01000000002",
-            from = "029302266",
-            text = "안녕하세요." + Environment.NewLine + "홍길동님 회원가입을 환영합니다." + Environment.NewLine + "아래 '시작하기' 버튼을 통해 간단하게 사용방법을 익히실 수 있습니다.",
-            kakaoOptions = new MessagingLib.KakaoOptions()
-            {
-                pfId = "KA01PF190626020502205cl0mYSoplA2",
-                templateId = "KA01TP190626032036196g86q1RGN7D2",
-                buttons = new MessagingLib.KakaoButton[] {
-                    new MessagingLib.KakaoButton()
-                    {
-                        buttonType = "WL",
-                        buttonName = "시작하기",
-                        linkMo = "https://m.example.com"
-                    }
-                }
-            }
-        });
-
-        // 모든 종류의 버튼 예시
+        // variables 사용하지 않고 수동 발송 에시 (모든 종류의 버튼 예시) - 실 사용으로 권하지 않습니다. (참고용)
         messages.Add(new MessagingLib.Message()
         {
             to = "01000000003",

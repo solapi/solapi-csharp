@@ -72,6 +72,7 @@ static class MessagingLib
         public bool disableSms;
         public string imageId;
         public KakaoButton[] buttons;
+        public Dictionary<string, string> variables;
     }
 
     public class Response
