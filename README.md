@@ -42,5 +42,4 @@ dotnet Messaging_SDK_For_.NET_Core3.1_CSharp.dll [sms, lms, mms, alimtalk, ching
 
 - .Net 5 혹은 .Net Core 3.1 버전 미만의 사용자(예) .Net Framework 4.0 등)는 MessagingLib.cs 파일 내 144번 라인 주석 해제 및 145번 라인에 주석처리를 진행하셔야
 합니다.
-
 - 반드시 API Key 및 API Secret Key는 공개된 Git Repository 혹은 웹페이지에 노출되지 않게 관리해주셔야 합니다.
